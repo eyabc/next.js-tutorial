@@ -1,20 +1,39 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
-
-import ProfileImage from '../components/ProfileImage';
-
+import faker from 'faker';
 
 class Index extends Component {
+  state = {
+    name: faker.name.findName(),
+    avatar: faker.image.avatar(),
+    email: faker.internet.email(),
+  };
+
+  generate = () => {
+    this.setState({
+      name: faker.name.findName(),
+      avatar: faker.image.avatar(),
+      email: faker.internet.email(),
+    });
+  };
+
   render () {
+    const { name, avatar, email } = this.state;
     return (
       <div>
-        <h1>Index</h1>
-        <button className="btn btn-primary">Button</button>
-        <div>
-          <ProfileImage />
-          <ProfileImage size={ 40 }/>
-          <ProfileImage url="https://placeimg.com/300/300/any"/>
-        </div>
+        <h1>Faker Demo</h1>
+
+        <dl className="row">
+          <dt className="col-sm-3">Avatar</dt>
+          <dd className="col-sm-9">
+            <img src={ avatar } alt=""/>
+          </dd>
+          <dt className="col-sm-3">Name</dt>
+          <dd className="col-sm-9">{ name }</dd>
+          <dt className="col-sm-3">Email</dt>
+          <dd className="col-sm-9">{ email }</dd>
+        </dl>
+
+        <button onClick={ this.generate }>Generate</button>
       </div>
     );
   }
