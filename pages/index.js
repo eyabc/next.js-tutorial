@@ -1,39 +1,27 @@
 import React, { Component } from 'react';
 import faker from 'faker';
-import { decorate, observable } from 'mobx';
+import { action, decorate, observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-// observable 관찰 대상
-class Data {
-  avatar = faker.image.avatar();
-  email = faker.internet.email();
-  name = {
+// observer 관찰
+@observer
+class Index extends Component {
+  @observable avatar = faker.image.avatar();
+  @observable email = faker.internet.email();
+  @observable name = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
   };
-}
 
-// mobx선언, 변수들을 observable으로 사용하겠다
-decorate(Data, {
-  avatar: observable,
-  email: observable,
-  name: observable,
-});
-
-// observer 관찰자
-class Index extends Component {
-  data = new Data();
-
+  @action.bound
   generate = () => {
-    console.log('gen');
-    const _this = this.data;
-    _this.email = faker.internet.email();
-    _this.name.firstName = faker.name.firstName();
-    _this.avatar = faker.image.avatar();
+    this.email = faker.internet.email();
+    this.name.firstName = faker.name.firstName();
+    this.avatar = faker.image.avatar();
   };
 
   render () {
-    const { name, avatar, email } = this.data;
+    const { name, avatar, email } = this;
     return (
       <div>
         <h1>Faker Demo</h1>
@@ -54,7 +42,5 @@ class Index extends Component {
     );
   }
 }
-
-Index = observer(Index);
 
 export default Index;
